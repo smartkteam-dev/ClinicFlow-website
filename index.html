@@ -7,346 +7,332 @@
   <meta name="description" content="ClinicFlow manages the full insurance claim lifecycle for massage therapy businesses — from provider credentialing to payment collection." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;700&family=Noto+Sans+TC:wght@300;400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;700&family=Noto+Sans+TC:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-  <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Plus Jakarta Sans','Noto Sans SC','Noto Sans TC','sans-serif']}}}}</script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['Playfair Display', 'Georgia', 'serif'],
+            sans: ['Inter', 'Noto Sans SC', 'Noto Sans TC', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    /* ── Hero gradient — soft powder blue like Letters.app ── */
+    :root {
+      --navy: #0A1628;
+      --charcoal: #1C1917;
+      --cream: #FAF9F7;
+      --text-primary: #1C1917;
+      --text-secondary: #57534E;
+      --text-muted: #A8A29E;
+      --gold: #B45309;
+      --gold-rule: #C4944A;
+      --border: #E8E5E0;
+    }
+
     .hero-bg {
-      background: linear-gradient(170deg, #6B9FBE 0%, #8BBDD6 25%, #AACFE2 55%, #C8E2EF 80%, #DFF0F8 100%);
+      background: linear-gradient(160deg, #0A1628 0%, #0F1E35 55%, #162840 100%);
+    }
+    .hero-noise {
+      position: absolute; inset: 0; pointer-events: none; opacity: .04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
     }
 
-    /* ── Letter reveal ── */
-    .char-wrap { display:inline-block; overflow:hidden; line-height:.92; padding-bottom:.08em; vertical-align:bottom; }
-    .char { display:inline-block; transform:translateY(110%); will-change:transform; }
+    .sep-gold { width: 32px; height: 1px; background: var(--gold-rule); }
+    .section-label { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
 
-    /* ── Scroll reveal ── */
-    .reveal { opacity:0; transform:translateY(28px); transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1); }
-    .reveal.visible { opacity:1; transform:translateY(0); }
-    .reveal-d1{transition-delay:.1s} .reveal-d2{transition-delay:.2s} .reveal-d3{transition-delay:.3s} .reveal-d4{transition-delay:.4s}
+    .char-wrap { display: inline-block; overflow: hidden; line-height: .92; padding-bottom: .08em; vertical-align: bottom; }
+    .char { display: inline-block; transform: translateY(110%); will-change: transform; }
 
-    /* ── Marquee ── */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-d1{transition-delay:.12s} .reveal-d2{transition-delay:.22s} .reveal-d3{transition-delay:.34s}
+
     @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-    .marquee-track { animation:marquee 24s linear infinite; white-space:nowrap; display:flex; gap:3rem; align-items:center; }
+    .marquee-track { animation: marquee 28s linear infinite; white-space: nowrap; display: flex; gap: 2.5rem; align-items: center; }
 
-    /* ── Particles (stars) ── */
-    .particle {
-      position:absolute; border-radius:50%; background:rgba(255,255,255,.7);
-      animation: twinkle var(--dur,3s) ease-in-out infinite var(--delay,0s);
+    @keyframes hfloat1 { 0%,100%{transform:rotate(-6deg) translateY(0px)} 50%{transform:rotate(-6deg) translateY(-12px)} }
+    @keyframes hfloat2 { 0%,100%{transform:translateY(0px)} 50%{transform:translateY(-16px)} }
+    @keyframes hfloat3 { 0%,100%{transform:rotate(6deg) translateY(0px)} 50%{transform:rotate(6deg) translateY(-10px)} }
+    @keyframes hfloat4 { 0%,100%{transform:translateY(0px)} 50%{transform:translateY(-7px)} }
+    @keyframes progressAnim { 0%,100%{width:58%} 50%{width:78%} }
+    @keyframes barGrow { 0%,100%{opacity:.5} 50%{opacity:1} }
+    @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.35;transform:scale(1.5)} }
+
+    .serif-underline { position: relative; display: inline-block; }
+    .serif-underline::after {
+      content: ''; position: absolute; bottom: 5px; left: 0; width: 100%; height: 1.5px;
+      background: linear-gradient(90deg, var(--gold-rule), rgba(196,148,74,.2));
+      border-radius: 1px; transform: scaleX(0); transform-origin: left;
+      transition: transform 1.1s cubic-bezier(.16,1,.3,1);
     }
-    @keyframes twinkle { 0%,100%{opacity:.2;transform:scale(1)} 50%{opacity:.9;transform:scale(1.4)} }
+    .serif-underline.show::after { transform: scaleX(1); }
 
-    /* ── Underline accent ── */
-    .underline-anim { position:relative; display:inline-block; }
-    .underline-anim::after { content:''; position:absolute; bottom:3px; left:0; width:100%; height:3px; background:rgba(255,255,255,.5); border-radius:2px; transform:scaleX(0); transform-origin:left; transition:transform .9s cubic-bezier(.16,1,.3,1); }
-    .underline-anim.show::after { transform:scaleX(1); }
+    .btn-white { background: #fff; color: var(--charcoal); border-radius: 6px; padding: 14px 28px; font-weight: 600; font-size: 14px; font-family: 'Inter',sans-serif; cursor: pointer; transition: background .2s, transform .15s, box-shadow .2s; border: none; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-white:hover { background: #F0EDE8; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,0,0,.2); }
+    .btn-ghost-white { background: transparent; color: rgba(255,255,255,.75); border-radius: 6px; padding: 13px 28px; font-weight: 500; font-size: 14px; font-family: 'Inter',sans-serif; cursor: pointer; border: 1px solid rgba(255,255,255,.2); transition: all .2s; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-ghost-white:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.45); color: #fff; transform: translateY(-1px); }
+    .btn-dark { background: var(--charcoal); color: #fff; border-radius: 6px; padding: 14px 28px; font-weight: 600; font-size: 14px; font-family: 'Inter',sans-serif; cursor: pointer; transition: background .2s, transform .15s, box-shadow .2s; border: none; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-dark:hover { background: #292524; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(28,25,23,.3); }
 
-    /* ── Pill buttons ── */
-    .btn-dark { background:#111827; color:#fff; border-radius:999px; padding:14px 28px; font-weight:700; font-size:15px; cursor:pointer; transition:background .2s,transform .15s,box-shadow .2s; }
-    .btn-dark:hover { background:#1E293B; transform:translateY(-1px); box-shadow:0 8px 24px rgba(0,0,0,.18); }
-    .btn-outline { background:#fff; color:#111827; border-radius:999px; padding:14px 28px; font-weight:700; font-size:15px; cursor:pointer; border:1.5px solid rgba(0,0,0,.1); transition:background .2s,transform .15s,box-shadow .2s; }
-    .btn-outline:hover { background:#F1F5F9; transform:translateY(-1px); box-shadow:0 8px 24px rgba(0,0,0,.10); }
+    #navbar-inner { transition: background .3s, box-shadow .3s, border-color .3s; }
 
-    /* ── Form inputs ── */
-    .form-field { width:100%; background:#F8FAFC; border:1.5px solid #E2E8F0; border-radius:12px; padding:13px 16px; color:#0F172A; font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; outline:none; transition:border-color .2s,box-shadow .2s; }
-    .form-field:focus { border-color:#6B9FBE; box-shadow:0 0 0 3px rgba(107,159,190,.15); }
-    .form-field::placeholder { color:#94A3B8; }
+    .form-field { width: 100%; background: #fff; border: 1.5px solid var(--border); border-radius: 8px; padding: 13px 16px; color: var(--charcoal); font-family: 'Inter',sans-serif; font-size: 14px; outline: none; transition: border-color .2s, box-shadow .2s; }
+    .form-field:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(180,83,9,.1); }
+    .form-field::placeholder { color: var(--text-muted); }
 
-    /* ── Navbar pill (Letters style) ── */
-    #navbar-inner { transition:background .3s,box-shadow .3s,border-color .3s; }
-
-    /* ── Section separator ── */
-    .sep { width:36px; height:2px; background:#6B9FBE; border-radius:1px; }
-
-    /* ── Pulse dot (live monitoring) ── */
-    @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.5)} }
-
-    /* ── Hero animated floating cards ── */
-    @keyframes hfloat1 { 0%,100%{transform:rotate(-4deg) translateY(0px)} 50%{transform:rotate(-4deg) translateY(-14px)} }
-    @keyframes hfloat2 { 0%,100%{transform:translateY(0px)} 50%{transform:translateY(-18px)} }
-    @keyframes hfloat3 { 0%,100%{transform:rotate(3deg) translateY(0px)} 50%{transform:rotate(3deg) translateY(-11px)} }
-    @keyframes hfloat4 { 0%,100%{transform:translateY(0px)} 50%{transform:translateY(-8px)} }
-    @keyframes progressAnim { 0%,100%{width:60%} 50%{width:80%} }
-    @keyframes barGrow { 0%,100%{opacity:.65} 50%{opacity:1} }
-
-    /* ── Custom cursor ── */
-    #cursor-dot {
-      position:fixed; left:0; top:0;
-      width:6px; height:6px; background:#111827; border-radius:50%;
-      z-index:9999; pointer-events:none; opacity:0; will-change:transform;
-      transition:opacity .25s;
-    }
-    #cursor-ring {
-      position:fixed; left:0; top:0;
-      width:38px; height:38px; border-radius:50%;
-      border:1.5px solid rgba(107,159,190,.8);
-      z-index:9998; pointer-events:none; opacity:0; will-change:transform;
-      transition:opacity .25s;
-    }
+    #cursor-dot { position:fixed; left:0; top:0; width:5px; height:5px; background:var(--charcoal); border-radius:50%; z-index:9999; pointer-events:none; opacity:0; will-change:transform; transition:opacity .25s; }
+    #cursor-ring { position:fixed; left:0; top:0; width:36px; height:36px; border-radius:50%; border:1.5px solid rgba(196,148,74,.65); z-index:9998; pointer-events:none; opacity:0; will-change:transform; transition:opacity .25s; }
     @media(pointer:coarse){ #cursor-dot,#cursor-ring{ display:none; } }
-    @media(pointer:fine){
-      body,body *{ cursor:none !important; }
-      input[type="text"],input[type="email"],input[type="tel"],textarea{ cursor:text !important; }
-    }
+    @media(pointer:fine){ body,body *{ cursor:none !important; } input,textarea,select{ cursor:text !important; } }
 
-    /* ── Scroll progress bar ── */
-    #scroll-progress {
-      position:fixed; top:0; left:0; height:3px; width:0%;
-      background:linear-gradient(90deg,#6B9FBE 0%,#AACFE2 100%);
-      z-index:10000; pointer-events:none; border-radius:0 2px 2px 0;
-    }
+    #scroll-progress { position:fixed; top:0; left:0; height:2px; width:0%; background:linear-gradient(90deg,var(--gold),var(--gold-rule)); z-index:10000; pointer-events:none; }
 
-    ::-webkit-scrollbar{width:5px} ::-webkit-scrollbar-track{background:#F8FAFC} ::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:3px}
-    @media(prefers-reduced-motion:reduce){.char{transform:none;}.reveal{opacity:1;transform:none;transition:none;}.marquee-track{animation:none;}.particle{animation:none;}.cursor-ring{transition:none;}.hero-anim{animation:none!important;}.animate-spin{animation:none!important;}}
+    .quote-mark { font-family:'Playfair Display',serif; font-size:72px; line-height:.55; color:var(--border); font-style:italic; user-select:none; }
+
+    ::-webkit-scrollbar{width:5px} ::-webkit-scrollbar-track{background:var(--cream)} ::-webkit-scrollbar-thumb{background:#D4CFC8;border-radius:3px}
+
+    @media(prefers-reduced-motion:reduce){
+      .char{transform:none;} .reveal{opacity:1;transform:none;transition:none;}
+      .marquee-track{animation:none;} .hero-anim{animation:none!important;}
+      .animate-spin{animation:none!important;} .serif-underline::after{transition:none;}
+    }
   </style>
 </head>
 
-<body class="font-sans bg-[#F8FAFC] text-[#0F172A] antialiased overflow-x-hidden" x-data="{mobileOpen:false,scrolled:false}" x-init="window.addEventListener('scroll',()=>scrolled=window.scrollY>60,{passive:true})">
+<body class="font-sans antialiased overflow-x-hidden" style="background:#FAF9F7;color:#1C1917;"
+  x-data="{mobileOpen:false,scrolled:false}"
+  x-init="window.addEventListener('scroll',()=>scrolled=window.scrollY>60,{passive:true})">
 
-  <!-- Scroll progress bar -->
   <div id="scroll-progress" aria-hidden="true"></div>
-  <!-- Custom cursor -->
   <div id="cursor-dot" aria-hidden="true"></div>
   <div id="cursor-ring" aria-hidden="true"></div>
 
-  <!-- ══════════════════════════════════════
-       NAVBAR — Letters style (top, minimal)
-  ══════════════════════════════════════ -->
+  <!-- NAVBAR -->
   <nav class="fixed top-0 left-0 right-0 z-50 px-5 pt-4">
-    <div id="navbar-inner" class="max-w-6xl mx-auto flex items-center justify-between px-5 py-3 rounded-2xl"
-         :class="scrolled ? 'bg-white/90 backdrop-blur-md shadow-md border border-gray-200/60' : ''">
-
-      <!-- Logo -->
-      <a href="#" class="flex items-center gap-2 cursor-pointer group">
-        <div class="w-8 h-8 bg-[#6B9FBE] rounded-lg flex items-center justify-center transition-transform duration-200 group-hover:scale-110">
-          <svg width="18" height="18" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+    <div id="navbar-inner" class="max-w-6xl mx-auto flex items-center justify-between px-6 py-3.5 rounded-xl"
+         :class="scrolled ? 'bg-[#FAF9F7]/95 backdrop-blur-md shadow-sm border border-[#E8E5E0]' : ''">
+      <a href="#" class="flex items-center gap-2.5 cursor-pointer">
+        <div class="w-8 h-8 rounded-md flex items-center justify-center transition-all duration-200"
+             :class="scrolled ? 'bg-[#1C1917]' : 'bg-white/12 border border-white/25'">
+          <svg width="16" height="16" viewBox="0 0 32 32" fill="none" aria-hidden="true">
             <path d="M8 16C8 11.582 11.582 8 16 8c2.8 0 5.3 1.4 6.8 3.6L20.2 13.2C19.2 11.9 17.7 11 16 11c-2.761 0-5 2.239-5 5s2.239 5 5 5c1.7 0 3.2-.9 4.2-2.2l2.6 1.6C21.3 22.6 18.8 24 16 24c-4.418 0-8-3.582-8-8z" fill="white"/>
             <path d="M20 16h4M22 14v4" stroke="white" stroke-width="2" stroke-linecap="round"/>
           </svg>
         </div>
-        <span class="font-bold text-lg" :class="scrolled ? 'text-[#0F172A]' : 'text-white'">ClinicFlow</span>
+        <span class="font-semibold text-base tracking-tight font-sans transition-colors duration-200"
+              :class="scrolled ? 'text-[#1C1917]' : 'text-white'">ClinicFlow</span>
       </a>
 
-      <!-- Center nav -->
-      <div class="hidden md:flex items-center gap-7">
-        <a href="#services" class="text-sm font-medium transition-colors cursor-pointer hover:opacity-70" :class="scrolled ? 'text-[#334155]' : 'text-white/85'">Services</a>
-        <a href="#how-it-works" class="text-sm font-medium transition-colors cursor-pointer hover:opacity-70" :class="scrolled ? 'text-[#334155]' : 'text-white/85'">How It Works</a>
-        <a href="#about" class="text-sm font-medium transition-colors cursor-pointer hover:opacity-70" :class="scrolled ? 'text-[#334155]' : 'text-white/85'">About</a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#services" class="text-sm font-medium transition-colors cursor-pointer"
+           :class="scrolled ? 'text-[#57534E] hover:text-[#1C1917]' : 'text-white/65 hover:text-white'">Services</a>
+        <a href="#how-it-works" class="text-sm font-medium transition-colors cursor-pointer"
+           :class="scrolled ? 'text-[#57534E] hover:text-[#1C1917]' : 'text-white/65 hover:text-white'">How It Works</a>
+        <a href="#about" class="text-sm font-medium transition-colors cursor-pointer"
+           :class="scrolled ? 'text-[#57534E] hover:text-[#1C1917]' : 'text-white/65 hover:text-white'">About</a>
       </div>
 
-      <!-- CTA -->
       <div class="flex items-center gap-3">
-        <a href="#contact" class="hidden md:inline-flex items-center gap-2 bg-white text-[#0F172A] hover:bg-[#F1F5F9] font-bold text-sm px-5 py-2.5 rounded-full cursor-pointer transition-all duration-200 shadow-sm border border-gray-200/50">Get a Quote</a>
-        <button @click="mobileOpen=!mobileOpen" class="md:hidden cursor-pointer p-2 rounded-lg" :class="scrolled ? 'text-[#0F172A]' : 'text-white'" aria-label="Toggle menu">
-          <svg x-show="!mobileOpen" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-          <svg x-show="mobileOpen" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        <a href="#contact" class="hidden md:inline-flex items-center gap-2 font-semibold text-sm px-5 py-2.5 rounded-md cursor-pointer transition-all duration-200"
+           :class="scrolled ? 'bg-[#1C1917] text-white hover:bg-[#292524]' : 'bg-white text-[#1C1917] hover:bg-white/90'">
+          Get a Quote
+        </a>
+        <button @click="mobileOpen=!mobileOpen" class="md:hidden cursor-pointer p-2 rounded-md transition-colors"
+                :class="scrolled ? 'text-[#1C1917]' : 'text-white'" aria-label="Toggle menu">
+          <svg x-show="!mobileOpen" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          <svg x-show="mobileOpen" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
     </div>
-
-    <!-- Mobile menu -->
-    <div x-show="mobileOpen" x-transition class="max-w-6xl mx-auto mt-2 bg-white/95 backdrop-blur-md rounded-2xl shadow-lg border border-gray-200/60 px-6 py-5 flex flex-col gap-4">
-      <a href="#services" @click="mobileOpen=false" class="text-sm font-medium text-[#334155] hover:text-[#6B9FBE] cursor-pointer">Services</a>
-      <a href="#how-it-works" @click="mobileOpen=false" class="text-sm font-medium text-[#334155] hover:text-[#6B9FBE] cursor-pointer">How It Works</a>
-      <a href="#about" @click="mobileOpen=false" class="text-sm font-medium text-[#334155] hover:text-[#6B9FBE] cursor-pointer">About</a>
-      <a href="#contact" @click="mobileOpen=false" class="btn-dark text-center text-sm">Get a Quote</a>
+    <div x-show="mobileOpen" x-transition class="max-w-6xl mx-auto mt-2 rounded-xl shadow-lg border border-[#E8E5E0] px-6 py-5 flex flex-col gap-4" style="background:#FAF9F7;">
+      <a href="#services" @click="mobileOpen=false" class="text-sm font-medium text-[#57534E] hover:text-[#1C1917] cursor-pointer">Services</a>
+      <a href="#how-it-works" @click="mobileOpen=false" class="text-sm font-medium text-[#57534E] hover:text-[#1C1917] cursor-pointer">How It Works</a>
+      <a href="#about" @click="mobileOpen=false" class="text-sm font-medium text-[#57534E] hover:text-[#1C1917] cursor-pointer">About</a>
+      <a href="#contact" @click="mobileOpen=false" class="btn-dark justify-center text-sm">Get a Quote</a>
     </div>
   </nav>
 
-  <!-- ══════════════════════════════════════
-       HERO — centered, Letters.app style
-  ══════════════════════════════════════ -->
-  <section class="hero-bg relative min-h-screen flex flex-col items-center justify-center text-center pt-28 pb-10 px-6 overflow-hidden">
+  <!-- HERO -->
+  <section class="hero-bg relative min-h-screen flex flex-col items-center justify-center text-center pt-28 pb-12 px-6 overflow-hidden">
+    <div class="hero-noise" aria-hidden="true"></div>
+    <div class="absolute inset-0 pointer-events-none opacity-[.025]" aria-hidden="true"
+         style="background-image:repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 0,transparent 50%);background-size:28px 28px;"></div>
+    <div class="absolute bottom-0 left-0 right-0 h-52 pointer-events-none" style="background:linear-gradient(to bottom,transparent,#FAF9F7);" aria-hidden="true"></div>
 
-    <!-- Particle stars -->
-    <div aria-hidden="true" id="particles"></div>
-
-    <!-- Bottom fade into white -->
-    <div class="absolute bottom-0 left-0 right-0 h-48 pointer-events-none" style="background:linear-gradient(to bottom, transparent, #F8FAFC);"></div>
-
-    <!-- Centered text content -->
     <div class="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center">
-
-      <!-- SmartTeam badge -->
-      <div id="hero-badge" class="inline-flex items-center gap-2 bg-white/25 backdrop-blur-sm border border-white/40 rounded-full px-4 py-2 mb-10" style="opacity:0">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" clip-rule="evenodd"/></svg>
-        <span class="text-white text-xs font-semibold tracking-wide">A SmartTeam Company</span>
+      <div id="hero-badge" class="inline-flex items-center gap-2.5 rounded-full px-4 py-2 mb-10"
+           style="opacity:0;background:rgba(196,148,74,.07);border:1px solid rgba(196,148,74,.3);">
+        <div class="w-1 h-1 rounded-full" style="background:#C4944A;animation:pulse-dot 2s ease-in-out infinite;"></div>
+        <span class="text-xs font-medium tracking-[.15em] uppercase font-sans" style="color:#C4944A;">A SmartTeam Company</span>
       </div>
 
-      <!-- Main headline — centered, GSAP reveal -->
-      <h1 class="font-extrabold text-white leading-[.92] tracking-[-0.03em] mb-8" style="font-size:clamp(52px,9vw,120px)">
-        <div class="overflow-hidden mb-1"><span class="char-wrap"><span class="char" id="c0">Insurance</span></span></div>
-        <div class="overflow-hidden mb-1"><span class="char-wrap"><span class="char underline-anim" id="c1">claims,</span></span></div>
-        <div class="overflow-hidden"><span class="char-wrap"><span class="char" id="c2">handled.</span></span></div>
+      <h1 class="font-serif leading-[.9] tracking-[-0.01em] mb-9" style="font-size:clamp(56px,9.5vw,124px);">
+        <div class="overflow-hidden mb-1.5"><span class="char-wrap"><span class="char text-white font-normal" id="c0">Insurance</span></span></div>
+        <div class="overflow-hidden mb-1.5"><span class="char-wrap"><span class="char text-white font-normal italic serif-underline" id="c1">claims,</span></span></div>
+        <div class="overflow-hidden"><span class="char-wrap"><span class="char font-bold" id="c2" style="color:#F0EBE0;">handled.</span></span></div>
       </h1>
 
-      <!-- Sub-copy -->
-      <p id="hero-sub" class="text-white/75 text-lg md:text-xl max-w-xl mx-auto leading-relaxed mb-10" style="opacity:0">
-        ClinicFlow manages the full claim lifecycle for massage therapy businesses. No software, no hardware — <strong class="text-white font-semibold">just results.</strong>
+      <p id="hero-sub" class="text-lg md:text-xl max-w-lg mx-auto leading-relaxed mb-10 font-sans font-light" style="opacity:0;color:rgba(255,255,255,.55);">
+        ClinicFlow manages the full claim lifecycle for massage therapy businesses.
+        No software, no hardware — <span style="color:rgba(255,255,255,.9);font-weight:500;">just results.</span>
       </p>
 
-      <!-- CTAs — centered pill style -->
       <div id="hero-ctas" class="flex flex-col sm:flex-row items-center justify-center gap-3" style="opacity:0">
-        <a href="#contact" class="btn-dark inline-flex items-center gap-2">
+        <a href="#contact" class="btn-white">
           Get a Quote
-          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <a href="#how-it-works" class="btn-outline inline-flex items-center gap-2">How It Works</a>
+        <a href="#how-it-works" class="btn-ghost-white">How It Works</a>
       </div>
     </div>
 
-    <!-- ── 3-card fan below text (like Letters.app Before/After) ── -->
-    <div id="hero-img" class="relative z-10 mt-14 w-full max-w-5xl mx-auto" style="opacity:0">
-
-      <!-- Floating badge: Live Monitoring (top-left of the fan) -->
-      <div class="absolute -top-3 left-[12%] bg-white/95 backdrop-blur-sm rounded-xl px-3 py-2 shadow-lg border border-gray-100 flex items-center gap-2 hero-anim z-20" style="animation:hfloat4 4.1s ease-in-out infinite 2s;">
-        <div class="w-1.5 h-1.5 bg-green-500 rounded-full" style="animation:pulse-dot 1.5s ease-in-out infinite;"></div>
-        <span class="text-[11px] font-bold text-[#0F172A]">Live Monitoring</span>
+    <!-- 3-card fan -->
+    <div id="hero-img" class="relative z-10 mt-16 w-full max-w-5xl mx-auto" style="opacity:0">
+      <div class="absolute -top-2 left-[10%] rounded-lg px-3 py-2 flex items-center gap-2 hero-anim z-20"
+           style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(12px);animation:hfloat4 4.1s ease-in-out infinite 2s;">
+        <div class="w-1.5 h-1.5 bg-emerald-400 rounded-full" style="animation:pulse-dot 1.5s ease-in-out infinite;"></div>
+        <span class="text-[11px] font-medium font-sans" style="color:rgba(255,255,255,.75);">Live Monitoring</span>
+      </div>
+      <div class="absolute -top-2 right-[10%] rounded-lg px-3 py-2.5 text-center hero-anim z-20"
+           style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(12px);animation:hfloat4 4.8s ease-in-out infinite 0.6s;">
+        <div class="text-sm font-bold leading-none font-sans" style="color:#C4944A;">98%</div>
+        <div class="text-[9px] font-medium mt-0.5 font-sans" style="color:rgba(255,255,255,.45);">Approval Rate</div>
       </div>
 
-      <!-- Floating badge: 98% Approval (top-right of the fan) -->
-      <div class="absolute -top-3 right-[12%] bg-white/95 backdrop-blur-sm rounded-xl px-3 py-2.5 shadow-lg border border-gray-100 text-center hero-anim z-20" style="animation:hfloat4 4.8s ease-in-out infinite 0.6s;">
-        <div class="text-sm font-extrabold text-[#6B9FBE] leading-none">98%</div>
-        <div class="text-[9px] text-[#94A3B8] font-semibold mt-0.5">Approval Rate</div>
-      </div>
-
-      <!-- 3-card fan: left-tilted · center-front · right-tilted -->
-      <div class="flex items-end justify-center gap-3 sm:gap-5 px-4">
-
-        <!-- LEFT: Processing card (tilted back-left) -->
-        <div style="transform:rotate(-7deg) translateY(22px); transform-origin:bottom center; flex-shrink:0;" class="hidden sm:block">
-          <div class="bg-white/88 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-100 p-5 hero-anim" style="width:210px; animation:hfloat2 5.5s ease-in-out infinite 1.1s;">
+      <div class="flex items-end justify-center gap-4 sm:gap-6 px-4">
+        <!-- LEFT -->
+        <div style="transform:rotate(-7deg) translateY(24px);transform-origin:bottom center;flex-shrink:0;" class="hidden sm:block">
+          <div class="rounded-2xl p-5 hero-anim" style="width:210px;animation:hfloat2 5.5s ease-in-out infinite 1.1s;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(12px);">
             <div class="flex items-center gap-2 mb-2.5">
-              <div class="w-5 h-5 bg-orange-50 rounded-md flex items-center justify-center">
-                <svg class="w-3 h-3 text-orange-400 animate-spin" fill="none" viewBox="0 0 24 24" aria-hidden="true"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+              <div class="w-5 h-5 rounded-md flex items-center justify-center" style="background:rgba(255,255,255,.1);">
+                <svg class="w-3 h-3 text-amber-300 animate-spin" fill="none" viewBox="0 0 24 24" aria-hidden="true"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
               </div>
-              <span class="text-xs font-bold text-[#0F172A]">Processing</span>
-              <span class="ml-auto text-[9px] bg-orange-50 text-orange-500 font-bold px-1.5 py-0.5 rounded-full">3 of 4</span>
+              <span class="text-xs font-medium font-sans" style="color:rgba(255,255,255,.75);">Processing</span>
+              <span class="ml-auto text-[9px] font-bold px-1.5 py-0.5 rounded font-sans" style="background:rgba(251,191,36,.15);color:#FBB724;">3 of 4</span>
             </div>
-            <div class="text-[10px] text-[#94A3B8] mb-2.5">Claim #CR-2891 · Follow-up sent</div>
-            <div class="w-full h-1 bg-[#E2E8F0] rounded-full overflow-hidden mb-3">
-              <div class="h-full bg-orange-300 rounded-full hero-anim" style="animation:progressAnim 3.6s ease-in-out infinite;"></div>
+            <div class="text-[10px] mb-2.5 font-sans" style="color:rgba(255,255,255,.35);">Claim #CR-2891 · Follow-up sent</div>
+            <div class="w-full h-0.5 rounded-full overflow-hidden mb-3" style="background:rgba(255,255,255,.1);">
+              <div class="h-full rounded-full hero-anim" style="animation:progressAnim 3.6s ease-in-out infinite;background:rgba(251,191,36,.45);"></div>
             </div>
-            <div class="text-[10px] text-[#94A3B8]">Patient: Marcus L. · Aetna</div>
+            <div class="text-[10px] font-sans" style="color:rgba(255,255,255,.35);">Patient: Marcus L. · Aetna</div>
           </div>
         </div>
 
-        <!-- CENTER: Claim Approved card (front main card) -->
-        <div style="flex-shrink:0; position:relative; z-index:10;">
-          <div class="bg-white rounded-3xl shadow-2xl border border-white/60 p-6 hero-anim" style="width:300px; animation:hfloat2 4.7s ease-in-out infinite 0.4s;">
+        <!-- CENTER -->
+        <div style="flex-shrink:0;position:relative;z-index:10;">
+          <div class="bg-white rounded-2xl shadow-2xl p-6 hero-anim" style="width:300px;animation:hfloat2 4.7s ease-in-out infinite 0.4s;border:1px solid rgba(232,229,224,.9);">
             <div class="flex items-center gap-2.5 mb-5">
-              <div class="w-8 h-8 bg-[#EFF6FF] rounded-xl flex items-center justify-center">
-                <svg class="w-4 h-4 text-[#6B9FBE]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:#FAF9F7;border:1px solid #E8E5E0;">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" style="color:#B45309;" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
               </div>
-              <span class="text-sm font-bold text-[#0F172A]">Claim Approved</span>
-              <span class="ml-auto text-[10px] bg-green-100 text-green-700 font-bold px-2 py-0.5 rounded-full">Paid</span>
+              <span class="text-sm font-semibold font-sans" style="color:#1C1917;">Claim Approved</span>
+              <span class="ml-auto text-[10px] font-semibold px-2 py-0.5 rounded font-sans" style="background:#ECFDF5;color:#065F46;">Paid</span>
             </div>
             <div class="space-y-2.5 mb-5">
-              <div class="flex justify-between text-xs text-[#64748B]"><span>Patient</span><span class="font-semibold text-[#0F172A]">Sarah M.</span></div>
-              <div class="flex justify-between text-xs text-[#64748B]"><span>Insurer</span><span class="font-semibold text-[#0F172A]">BlueCross</span></div>
-              <div class="flex justify-between text-xs text-[#64748B]"><span>Service</span><span class="font-semibold text-[#0F172A]">Massage Therapy</span></div>
-              <div class="flex justify-between text-xs text-[#64748B]"><span>Amount</span><span class="font-bold text-green-600 text-sm">$245.00</span></div>
+              <div class="flex justify-between text-xs font-sans" style="color:#A8A29E;"><span>Patient</span><span class="font-medium" style="color:#1C1917;">Sarah M.</span></div>
+              <div class="flex justify-between text-xs font-sans" style="color:#A8A29E;"><span>Insurer</span><span class="font-medium" style="color:#1C1917;">BlueCross</span></div>
+              <div class="flex justify-between text-xs font-sans" style="color:#A8A29E;"><span>Service</span><span class="font-medium" style="color:#1C1917;">Massage Therapy</span></div>
+              <div class="flex justify-between text-xs font-sans" style="color:#A8A29E;"><span>Amount</span><span class="font-bold text-sm" style="color:#065F46;">$245.00</span></div>
             </div>
-            <div class="w-full h-1.5 bg-[#E2E8F0] rounded-full overflow-hidden mb-2"><div class="h-full bg-[#6B9FBE] rounded-full w-full"></div></div>
-            <div class="text-[10px] text-[#94A3B8] text-right">Processed in 4 days</div>
+            <div class="w-full h-1 rounded-full overflow-hidden mb-2" style="background:#E8E5E0;"><div class="h-full rounded-full w-full" style="background:linear-gradient(90deg,#B45309,#C4944A);"></div></div>
+            <div class="text-[10px] text-right font-sans" style="color:#A8A29E;">Processed in 4 days</div>
           </div>
         </div>
 
-        <!-- RIGHT: Revenue stats (tilted back-right) -->
-        <div style="transform:rotate(7deg) translateY(22px); transform-origin:bottom center; flex-shrink:0;" class="hidden sm:block">
-          <div class="bg-white/88 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-100 p-5 hero-anim" style="width:210px; animation:hfloat2 5.0s ease-in-out infinite 1.8s;">
-            <div class="text-[9px] text-[#94A3B8] font-bold uppercase tracking-widest mb-1.5">This Month</div>
-            <div class="text-2xl font-extrabold text-[#0F172A] leading-none mb-1">$12,480</div>
-            <div class="flex items-center gap-1 text-[10px] text-green-600 font-semibold mb-4">
+        <!-- RIGHT -->
+        <div style="transform:rotate(7deg) translateY(24px);transform-origin:bottom center;flex-shrink:0;" class="hidden sm:block">
+          <div class="rounded-2xl p-5 hero-anim" style="width:210px;animation:hfloat2 5.0s ease-in-out infinite 1.8s;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(12px);">
+            <div class="text-[9px] font-semibold uppercase tracking-widest mb-1.5 font-sans" style="color:rgba(255,255,255,.35);">This Month</div>
+            <div class="text-2xl font-bold leading-none mb-1 text-white font-sans">$12,480</div>
+            <div class="flex items-center gap-1 mb-4 font-sans" style="font-size:10px;color:#34D399;font-weight:600;">
               <svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18"/></svg>
               +18% vs last month
             </div>
             <div class="flex items-end gap-1.5" style="height:36px;">
-              <div class="flex-1 bg-[#E2E8F0] rounded-sm hero-anim" style="height:38%;animation:barGrow 3.2s ease-in-out infinite .1s;"></div>
-              <div class="flex-1 bg-[#C8E2EF] rounded-sm hero-anim" style="height:55%;animation:barGrow 3.2s ease-in-out infinite .25s;"></div>
-              <div class="flex-1 bg-[#AACFE2] rounded-sm hero-anim" style="height:44%;animation:barGrow 3.2s ease-in-out infinite .4s;"></div>
-              <div class="flex-1 bg-[#8BBDD6] rounded-sm hero-anim" style="height:70%;animation:barGrow 3.2s ease-in-out infinite .55s;"></div>
-              <div class="flex-1 bg-[#6B9FBE] rounded-sm hero-anim" style="height:57%;animation:barGrow 3.2s ease-in-out infinite .7s;"></div>
-              <div class="flex-1 bg-[#4A8DAF] rounded-sm hero-anim" style="height:90%;animation:barGrow 3.2s ease-in-out infinite .85s;"></div>
+              <div class="flex-1 rounded-sm hero-anim" style="height:38%;animation:barGrow 3.2s ease-in-out infinite .1s;background:rgba(196,148,74,.25);"></div>
+              <div class="flex-1 rounded-sm hero-anim" style="height:55%;animation:barGrow 3.2s ease-in-out infinite .25s;background:rgba(196,148,74,.38);"></div>
+              <div class="flex-1 rounded-sm hero-anim" style="height:44%;animation:barGrow 3.2s ease-in-out infinite .4s;background:rgba(196,148,74,.5);"></div>
+              <div class="flex-1 rounded-sm hero-anim" style="height:70%;animation:barGrow 3.2s ease-in-out infinite .55s;background:rgba(196,148,74,.63);"></div>
+              <div class="flex-1 rounded-sm hero-anim" style="height:57%;animation:barGrow 3.2s ease-in-out infinite .7s;background:rgba(196,148,74,.76);"></div>
+              <div class="flex-1 rounded-sm hero-anim" style="height:90%;animation:barGrow 3.2s ease-in-out infinite .85s;background:rgba(196,148,74,.9);"></div>
             </div>
           </div>
         </div>
-
       </div>
     </div>
-
   </section>
 
-  <!-- ══════════════════════════════════════
-       MARQUEE TICKER
-  ══════════════════════════════════════ -->
-  <div class="py-4 border-y border-gray-200/70 overflow-hidden bg-white">
+  <!-- MARQUEE -->
+  <div class="py-4 border-y overflow-hidden" style="background:#FAF9F7;border-color:#E8E5E0;">
     <div class="marquee-track">
-      <span class="text-[#94A3B8] text-xs font-bold uppercase tracking-[.18em]">Provider Credentialing</span>
-      <span class="text-[#6B9FBE]" aria-hidden="true">·</span>
-      <span class="text-[#94A3B8] text-xs font-bold uppercase tracking-[.18em]">Claim Lifecycle Management</span>
-      <span class="text-[#6B9FBE]" aria-hidden="true">·</span>
-      <span class="text-[#94A3B8] text-xs font-bold uppercase tracking-[.18em]">Monthly Reports &amp; Analytics</span>
-      <span class="text-[#6B9FBE]" aria-hidden="true">·</span>
-      <span class="text-[#94A3B8] text-xs font-bold uppercase tracking-[.18em]">Denial Management</span>
-      <span class="text-[#6B9FBE]" aria-hidden="true">·</span>
-      <span class="text-[#94A3B8] text-xs font-bold uppercase tracking-[.18em]">Revenue Cycle Management</span>
-      <span class="text-[#6B9FBE]" aria-hidden="true">·</span>
-      <span class="text-[#94A3B8] text-xs font-bold uppercase tracking-[.18em]">BCBS · Aetna · Cigna · United</span>
-      <span class="text-[#6B9FBE]" aria-hidden="true">·</span>
-      <!-- duplicate -->
-      <span class="text-[#94A3B8] text-xs font-bold uppercase tracking-[.18em]">Provider Credentialing</span>
-      <span class="text-[#6B9FBE]" aria-hidden="true">·</span>
-      <span class="text-[#94A3B8] text-xs font-bold uppercase tracking-[.18em]">Claim Lifecycle Management</span>
-      <span class="text-[#6B9FBE]" aria-hidden="true">·</span>
-      <span class="text-[#94A3B8] text-xs font-bold uppercase tracking-[.18em]">Monthly Reports &amp; Analytics</span>
-      <span class="text-[#6B9FBE]" aria-hidden="true">·</span>
-      <span class="text-[#94A3B8] text-xs font-bold uppercase tracking-[.18em]">Denial Management</span>
-      <span class="text-[#6B9FBE]" aria-hidden="true">·</span>
-      <span class="text-[#94A3B8] text-xs font-bold uppercase tracking-[.18em]">Revenue Cycle Management</span>
-      <span class="text-[#6B9FBE]" aria-hidden="true">·</span>
-      <span class="text-[#94A3B8] text-xs font-bold uppercase tracking-[.18em]">BCBS · Aetna · Cigna · United</span>
-      <span class="text-[#6B9FBE]" aria-hidden="true">·</span>
+      <span class="section-label" style="color:#A8A29E;">Provider Credentialing</span>
+      <span style="color:#C4944A;" aria-hidden="true">—</span>
+      <span class="section-label" style="color:#A8A29E;">Claim Lifecycle Management</span>
+      <span style="color:#C4944A;" aria-hidden="true">—</span>
+      <span class="section-label" style="color:#A8A29E;">Monthly Reports &amp; Analytics</span>
+      <span style="color:#C4944A;" aria-hidden="true">—</span>
+      <span class="section-label" style="color:#A8A29E;">Denial Management</span>
+      <span style="color:#C4944A;" aria-hidden="true">—</span>
+      <span class="section-label" style="color:#A8A29E;">Revenue Cycle Management</span>
+      <span style="color:#C4944A;" aria-hidden="true">—</span>
+      <span class="section-label" style="color:#A8A29E;">Premera · Aetna · Kaiser · BCBS</span>
+      <span style="color:#C4944A;" aria-hidden="true">—</span>
+      <span class="section-label" style="color:#A8A29E;">Provider Credentialing</span>
+      <span style="color:#C4944A;" aria-hidden="true">—</span>
+      <span class="section-label" style="color:#A8A29E;">Claim Lifecycle Management</span>
+      <span style="color:#C4944A;" aria-hidden="true">—</span>
+      <span class="section-label" style="color:#A8A29E;">Monthly Reports &amp; Analytics</span>
+      <span style="color:#C4944A;" aria-hidden="true">—</span>
+      <span class="section-label" style="color:#A8A29E;">Denial Management</span>
+      <span style="color:#C4944A;" aria-hidden="true">—</span>
+      <span class="section-label" style="color:#A8A29E;">Revenue Cycle Management</span>
+      <span style="color:#C4944A;" aria-hidden="true">—</span>
+      <span class="section-label" style="color:#A8A29E;">Premera · Aetna · Kaiser · BCBS</span>
+      <span style="color:#C4944A;" aria-hidden="true">—</span>
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════
-       PROBLEM
-  ══════════════════════════════════════ -->
-  <section class="py-28 px-6 bg-white">
+  <!-- PROBLEM -->
+  <section class="py-32 px-6" style="background:#FAF9F7;">
     <div class="max-w-7xl mx-auto">
       <div class="grid md:grid-cols-[180px_1fr] gap-12 items-start">
         <div class="reveal">
-          <div class="sep mb-4"></div>
-          <p class="text-[#94A3B8] text-xs font-bold uppercase tracking-[.18em]">The Problem</p>
+          <div class="sep-gold mb-4"></div>
+          <p class="section-label" style="color:#A8A29E;">The Problem</p>
         </div>
         <div>
-          <h2 class="text-4xl md:text-5xl lg:text-[3.5rem] font-bold leading-tight tracking-tight text-[#0F172A] mb-12 reveal">
-            Insurance claims are <span class="text-[#94A3B8] italic font-light">costing you</span><br/>time, revenue, and sleep.
+          <h2 class="font-serif leading-tight tracking-tight mb-14 reveal" style="font-size:clamp(2.2rem,5vw,3.75rem);color:#1C1917;">
+            Insurance claims are <em class="font-normal" style="color:#A8A29E;">costing you</em><br/>time, revenue, and sleep.
           </h2>
           <div class="grid md:grid-cols-3 gap-5">
-            <div class="bg-[#F8FAFC] rounded-2xl p-6 border border-gray-100 hover:border-[#6B9FBE]/70 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 cursor-default reveal reveal-d1">
-              <div class="w-10 h-10 rounded-xl bg-[#EFF6FF] flex items-center justify-center mb-5">
-                <svg class="h-5 w-5 text-[#6B9FBE]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <div class="bg-white rounded-xl p-7 border hover:border-[#C4944A]/50 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 cursor-default reveal reveal-d1" style="border-color:#E8E5E0;">
+              <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-6" style="background:#FAF9F7;border:1px solid #E8E5E0;">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" style="color:#B45309;" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
               </div>
-              <h3 class="font-bold text-[#0F172A] mb-2">Months of Waiting</h3>
-              <p class="text-[#64748B] text-sm leading-relaxed">Credentialing paperwork with no visibility into where your application stands.</p>
+              <h3 class="font-semibold font-sans mb-2.5" style="color:#1C1917;font-size:15px;">Months of Waiting</h3>
+              <p class="text-sm leading-relaxed font-sans" style="color:#78716C;">Credentialing paperwork with no visibility into where your application stands.</p>
             </div>
-            <div class="bg-[#F8FAFC] rounded-2xl p-6 border border-gray-100 hover:border-[#6B9FBE]/70 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 cursor-default reveal reveal-d2">
-              <div class="w-10 h-10 rounded-xl bg-[#EFF6FF] flex items-center justify-center mb-5">
-                <svg class="h-5 w-5 text-[#6B9FBE]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
+            <div class="bg-white rounded-xl p-7 border hover:border-[#C4944A]/50 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 cursor-default reveal reveal-d2" style="border-color:#E8E5E0;">
+              <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-6" style="background:#FAF9F7;border:1px solid #E8E5E0;">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" style="color:#B45309;" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
               </div>
-              <h3 class="font-bold text-[#0F172A] mb-2">Denied Claims</h3>
-              <p class="text-[#64748B] text-sm leading-relaxed">Claims get denied, lost, or stuck in follow-up loops that cost you real revenue.</p>
+              <h3 class="font-semibold font-sans mb-2.5" style="color:#1C1917;font-size:15px;">Denied Claims</h3>
+              <p class="text-sm leading-relaxed font-sans" style="color:#78716C;">Claims get denied, lost, or stuck in follow-up loops that cost you real revenue.</p>
             </div>
-            <div class="bg-[#F8FAFC] rounded-2xl p-6 border border-gray-100 hover:border-[#6B9FBE]/70 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 cursor-default reveal reveal-d3">
-              <div class="w-10 h-10 rounded-xl bg-[#EFF6FF] flex items-center justify-center mb-5">
-                <svg class="h-5 w-5 text-[#6B9FBE]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
+            <div class="bg-white rounded-xl p-7 border hover:border-[#C4944A]/50 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 cursor-default reveal reveal-d3" style="border-color:#E8E5E0;">
+              <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-6" style="background:#FAF9F7;border:1px solid #E8E5E0;">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" style="color:#B45309;" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
               </div>
-              <h3 class="font-bold text-[#0F172A] mb-2">Zero Visibility</h3>
-              <p class="text-[#64748B] text-sm leading-relaxed">No insight into claim status, pending revenue, or how your practice is performing.</p>
+              <h3 class="font-semibold font-sans mb-2.5" style="color:#1C1917;font-size:15px;">Zero Visibility</h3>
+              <p class="text-sm leading-relaxed font-sans" style="color:#78716C;">No insight into claim status, pending revenue, or how your practice is performing.</p>
             </div>
           </div>
         </div>
@@ -354,167 +340,203 @@
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════
-       SERVICES
-  ══════════════════════════════════════ -->
-  <section id="services" class="py-28 px-6 bg-[#F8FAFC]">
+  <!-- SERVICES -->
+  <section id="services" class="py-32 px-6 bg-white">
     <div class="max-w-7xl mx-auto">
-      <div class="mb-14 reveal">
-        <div class="sep mb-4"></div>
-        <p class="text-[#6B9FBE] text-xs font-bold uppercase tracking-[.18em] mb-4">Services</p>
-        <h2 class="text-4xl md:text-5xl font-bold leading-tight tracking-tight text-[#0F172A]">
-          Everything you need.<br/><span class="text-[#94A3B8] italic font-light">Nothing you don't.</span>
+      <div class="mb-16 reveal">
+        <div class="sep-gold mb-4"></div>
+        <p class="section-label mb-5" style="color:#B45309;">Services</p>
+        <h2 class="font-serif leading-tight tracking-tight" style="font-size:clamp(2.2rem,5vw,3.75rem);color:#1C1917;">
+          Everything you need.<br/><em class="font-normal" style="color:#A8A29E;">Nothing you don't.</em>
         </h2>
       </div>
-
       <div class="grid md:grid-cols-2 gap-6">
+
         <!-- Credentialing -->
-        <div class="group bg-white rounded-3xl p-10 border border-gray-100 hover:border-[#6B9FBE] hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-default reveal reveal-d1">
-          <div class="mb-7">
-            <span class="text-[#64748B] text-xs bg-gray-100 rounded-full px-3 py-1.5 inline-flex items-center gap-1.5">
-              <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <div class="group rounded-xl p-10 border hover:border-[#C4944A]/50 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-default reveal reveal-d1" style="background:#FAF9F7;border-color:#E8E5E0;">
+          <div class="mb-8">
+            <span class="section-label inline-flex items-center gap-1.5" style="color:#A8A29E;background:#fff;border:1px solid #E8E5E0;border-radius:4px;padding:5px 12px;">
+              <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
               2–3 months
             </span>
           </div>
-          <h3 class="text-3xl font-bold text-[#0F172A] mb-4 leading-tight">Provider<br/>Credentialing</h3>
-          <p class="text-[#64748B] text-sm leading-relaxed mb-7">Get accepted by major insurance providers. We handle every application, document, and follow-up — actively monitoring your status until approval.</p>
-          <ul class="space-y-3 mb-8">
-            <li class="flex items-center gap-3 text-[#334155] text-sm"><svg class="h-4 w-4 text-[#6B9FBE] flex-shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd"/></svg>Application preparation &amp; submission</li>
-            <li class="flex items-center gap-3 text-[#334155] text-sm"><svg class="h-4 w-4 text-[#6B9FBE] flex-shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd"/></svg>Document collection &amp; verification</li>
-            <li class="flex items-center gap-3 text-[#334155] text-sm"><svg class="h-4 w-4 text-[#6B9FBE] flex-shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd"/></svg>Active status monitoring &amp; follow-up</li>
-            <li class="flex items-center gap-3 text-[#334155] text-sm"><svg class="h-4 w-4 text-[#6B9FBE] flex-shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd"/></svg>Premera, Aetna, Kaiser &amp; more</li>
+          <h3 class="font-serif mb-4 leading-tight" style="font-size:clamp(1.6rem,3vw,2.1rem);color:#1C1917;">Provider<br/>Credentialing</h3>
+          <p class="text-sm leading-relaxed mb-8 font-sans" style="color:#78716C;">Get accepted by major insurance providers. We handle every application, document, and follow-up — actively monitoring your status until approval.</p>
+          <ul class="space-y-3 mb-9">
+            <li class="flex items-center gap-3 text-sm font-sans" style="color:#57534E;"><svg class="h-4 w-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style="color:#B45309;" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>Application preparation &amp; submission</li>
+            <li class="flex items-center gap-3 text-sm font-sans" style="color:#57534E;"><svg class="h-4 w-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style="color:#B45309;" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>Document collection &amp; verification</li>
+            <li class="flex items-center gap-3 text-sm font-sans" style="color:#57534E;"><svg class="h-4 w-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style="color:#B45309;" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>Active status monitoring &amp; follow-up</li>
+            <li class="flex items-center gap-3 text-sm font-sans" style="color:#57534E;"><svg class="h-4 w-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style="color:#B45309;" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>Premera, Aetna, Kaiser &amp; more</li>
           </ul>
-          <a href="#contact" class="inline-flex items-center gap-2 text-[#6B9FBE] font-semibold text-sm cursor-pointer group-hover:gap-3 transition-all duration-200">Get started <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          <a href="#contact" class="inline-flex items-center gap-2 text-sm font-semibold font-sans group-hover:gap-3 transition-all duration-200 cursor-pointer" style="color:#B45309;">
+            Get started <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
         </div>
 
-        <!-- CLM — light blue tinted -->
-        <div class="group rounded-3xl p-10 border hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-default reveal reveal-d2" style="background:linear-gradient(135deg,#6B9FBE 0%,#8BBDD6 50%,#AACFE2 100%); border-color:rgba(107,159,190,.3);">
-          <div class="mb-7">
-            <span class="text-white/70 text-xs bg-white/15 rounded-full px-3 py-1.5 inline-flex items-center gap-1.5">
-              <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>
+        <!-- CLM — dark navy card -->
+        <div class="group rounded-xl p-10 border hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-default reveal reveal-d2" style="background:#0A1628;border-color:#1A2E48;">
+          <div class="mb-8">
+            <span class="section-label inline-flex items-center gap-1.5" style="color:rgba(255,255,255,.35);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:4px;padding:5px 12px;">
+              <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>
               Ongoing
             </span>
           </div>
-          <h3 class="text-3xl font-bold text-white mb-4 leading-tight">Claim Lifecycle<br/>Management</h3>
-          <p class="text-white/75 text-sm leading-relaxed mb-7">End-to-end management of every claim — from patient intake to payment. Plus real-time analytics and monthly PDF reports so you always know where your revenue stands.</p>
-          <ul class="space-y-3 mb-8">
-            <li class="flex items-center gap-3 text-white/80 text-sm"><svg class="h-4 w-4 text-white flex-shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd"/></svg>Customer master data management</li>
-            <li class="flex items-center gap-3 text-white/80 text-sm"><svg class="h-4 w-4 text-white flex-shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd"/></svg>Claim creation, submission &amp; follow-up</li>
-            <li class="flex items-center gap-3 text-white/80 text-sm"><svg class="h-4 w-4 text-white flex-shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd"/></svg>Denial management &amp; appeals</li>
-            <li class="flex items-center gap-3 text-white/80 text-sm"><svg class="h-4 w-4 text-white flex-shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd"/></svg>Analytics dashboard + monthly PDF reports</li>
+          <h3 class="font-serif mb-4 leading-tight text-white" style="font-size:clamp(1.6rem,3vw,2.1rem);">Claim Lifecycle<br/>Management</h3>
+          <p class="text-sm leading-relaxed mb-8 font-sans" style="color:rgba(255,255,255,.45);">End-to-end management of every claim — from patient intake to payment. Plus real-time analytics and monthly PDF reports so you always know where your revenue stands.</p>
+          <ul class="space-y-3 mb-9">
+            <li class="flex items-center gap-3 text-sm font-sans" style="color:rgba(255,255,255,.6);"><svg class="h-4 w-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style="color:#C4944A;" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>Customer master data management</li>
+            <li class="flex items-center gap-3 text-sm font-sans" style="color:rgba(255,255,255,.6);"><svg class="h-4 w-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style="color:#C4944A;" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>Claim creation, submission &amp; follow-up</li>
+            <li class="flex items-center gap-3 text-sm font-sans" style="color:rgba(255,255,255,.6);"><svg class="h-4 w-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style="color:#C4944A;" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>Denial management &amp; appeals</li>
+            <li class="flex items-center gap-3 text-sm font-sans" style="color:rgba(255,255,255,.6);"><svg class="h-4 w-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style="color:#C4944A;" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>Analytics dashboard + monthly PDF reports</li>
           </ul>
-          <a href="#contact" class="inline-flex items-center gap-2 text-white font-semibold text-sm cursor-pointer group-hover:gap-3 transition-all duration-200">Get started <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          <a href="#contact" class="inline-flex items-center gap-2 text-sm font-semibold font-sans group-hover:gap-3 transition-all duration-200 cursor-pointer" style="color:#C4944A;">
+            Get started <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════
-       HOW IT WORKS
-  ══════════════════════════════════════ -->
-  <section id="how-it-works" class="py-28 px-6 bg-white">
+  <!-- HOW IT WORKS -->
+  <section id="how-it-works" class="py-32 px-6" style="background:#FAF9F7;">
     <div class="max-w-7xl mx-auto">
       <div class="grid md:grid-cols-[180px_1fr] gap-12 mb-20">
-        <div class="reveal"><div class="sep mb-4"></div><p class="text-[#94A3B8] text-xs font-bold uppercase tracking-[.18em]">The Process</p></div>
-        <h2 class="text-4xl md:text-5xl font-bold leading-tight tracking-tight text-[#0F172A] reveal">
-          Simple for you.<br/><span class="text-[#94A3B8] italic font-light">Handled by us.</span>
+        <div class="reveal">
+          <div class="sep-gold mb-4"></div>
+          <p class="section-label" style="color:#A8A29E;">The Process</p>
+        </div>
+        <h2 class="font-serif leading-tight tracking-tight reveal" style="font-size:clamp(2.2rem,5vw,3.75rem);color:#1C1917;">
+          Simple for you.<br/><em class="font-normal" style="color:#A8A29E;">Handled by us.</em>
         </h2>
       </div>
       <div>
-        <div class="grid md:grid-cols-[72px_220px_1fr] gap-6 items-start py-10 border-t border-gray-100 reveal">
-          <span class="text-[#E2E8F0] text-5xl font-extrabold leading-none">01</span>
-          <h3 class="text-xl font-bold text-[#0F172A]">Onboard</h3>
-          <p class="text-[#64748B] text-sm leading-relaxed">Share your business information with us. No software to install, no hardware to buy. We handle all the setup from day one.</p>
+        <div class="grid md:grid-cols-[80px_220px_1fr] gap-6 items-start py-10 border-t reveal" style="border-color:#E8E5E0;">
+          <span class="font-serif font-light italic leading-none select-none" style="font-size:3.5rem;color:#E8E5E0;">01</span>
+          <h3 class="text-lg font-semibold font-sans" style="color:#1C1917;">Onboard</h3>
+          <p class="text-sm leading-relaxed font-sans" style="color:#78716C;">Share your business information with us. No software to install, no hardware to buy. We handle all the setup from day one.</p>
         </div>
-        <div class="grid md:grid-cols-[72px_220px_1fr] gap-6 items-start py-10 border-t border-gray-100 reveal">
-          <span class="text-[#E2E8F0] text-5xl font-extrabold leading-none">02</span>
-          <h3 class="text-xl font-bold text-[#0F172A]">We Work</h3>
-          <p class="text-[#64748B] text-sm leading-relaxed">ClinicFlow manages your credentialing and claim lifecycle end-to-end. We interact with insurers so you never have to.</p>
+        <div class="grid md:grid-cols-[80px_220px_1fr] gap-6 items-start py-10 border-t reveal" style="border-color:#E8E5E0;">
+          <span class="font-serif font-light italic leading-none select-none" style="font-size:3.5rem;color:#E8E5E0;">02</span>
+          <h3 class="text-lg font-semibold font-sans" style="color:#1C1917;">We Work</h3>
+          <p class="text-sm leading-relaxed font-sans" style="color:#78716C;">ClinicFlow manages your credentialing and claim lifecycle end-to-end. We interact with insurers so you never have to.</p>
         </div>
-        <div class="grid md:grid-cols-[72px_220px_1fr] gap-6 items-start py-10 border-t border-b border-gray-100 reveal">
-          <span class="text-[#E2E8F0] text-5xl font-extrabold leading-none">03</span>
-          <h3 class="text-xl font-bold text-[#0F172A]">You Grow</h3>
-          <p class="text-[#64748B] text-sm leading-relaxed">Receive monthly PDF reports and real-time analytics. Know your revenue, know your status. Focus on healing.</p>
+        <div class="grid md:grid-cols-[80px_220px_1fr] gap-6 items-start py-10 border-t border-b reveal" style="border-color:#E8E5E0;">
+          <span class="font-serif font-light italic leading-none select-none" style="font-size:3.5rem;color:#E8E5E0;">03</span>
+          <h3 class="text-lg font-semibold font-sans" style="color:#1C1917;">You Grow</h3>
+          <p class="text-sm leading-relaxed font-sans" style="color:#78716C;">Receive monthly PDF reports and real-time analytics. Know your revenue, know your status. Focus on healing.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════
-       STATS — soft blue bg
-  ══════════════════════════════════════ -->
-  <section id="about" class="py-20 px-6" style="background:linear-gradient(135deg,#6B9FBE 0%,#8BBDD6 50%,#C8E2EF 100%);">
-    <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-10">
-      <div class="reveal text-center"><div class="text-5xl md:text-6xl font-extrabold text-white mb-2">500+</div><p class="text-white/70 text-sm font-medium">Claims Managed</p></div>
-      <div class="reveal reveal-d1 text-center"><div class="text-5xl md:text-6xl font-extrabold text-white mb-2">98%</div><p class="text-white/70 text-sm font-medium">Credentialing Success</p></div>
-      <div class="reveal reveal-d2 text-center"><div class="text-5xl md:text-6xl font-extrabold text-white mb-2">2–3<span class="text-3xl text-white/50">mo</span></div><p class="text-white/70 text-sm font-medium">Avg. Credentialing Time</p></div>
-      <div class="reveal reveal-d3 text-center"><div class="text-5xl md:text-6xl font-extrabold text-white mb-2">100%</div><p class="text-white/70 text-sm font-medium">Client Retention</p></div>
+  <!-- STATS -->
+  <section id="about" class="py-24 px-6" style="background:#1C1917;">
+    <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-8">
+      <div class="reveal text-center">
+        <div class="font-serif font-bold mb-3 text-white" style="font-size:clamp(2.5rem,6vw,4rem);">500+</div>
+        <div class="w-6 h-px mx-auto mb-3" style="background:rgba(196,148,74,.45);"></div>
+        <p class="text-sm font-sans font-medium" style="color:rgba(255,255,255,.4);">Claims Managed</p>
+      </div>
+      <div class="reveal reveal-d1 text-center">
+        <div class="font-serif font-bold mb-3 text-white" style="font-size:clamp(2.5rem,6vw,4rem);">98%</div>
+        <div class="w-6 h-px mx-auto mb-3" style="background:rgba(196,148,74,.45);"></div>
+        <p class="text-sm font-sans font-medium" style="color:rgba(255,255,255,.4);">Credentialing Success</p>
+      </div>
+      <div class="reveal reveal-d2 text-center">
+        <div class="font-serif font-bold mb-3 text-white" style="font-size:clamp(2.5rem,6vw,4rem);">2–3<span class="font-sans font-light" style="font-size:1.3rem;color:rgba(255,255,255,.35);">mo</span></div>
+        <div class="w-6 h-px mx-auto mb-3" style="background:rgba(196,148,74,.45);"></div>
+        <p class="text-sm font-sans font-medium" style="color:rgba(255,255,255,.4);">Avg. Credentialing Time</p>
+      </div>
+      <div class="reveal reveal-d3 text-center">
+        <div class="font-serif font-bold mb-3 text-white" style="font-size:clamp(2.5rem,6vw,4rem);">100%</div>
+        <div class="w-6 h-px mx-auto mb-3" style="background:rgba(196,148,74,.45);"></div>
+        <p class="text-sm font-sans font-medium" style="color:rgba(255,255,255,.4);">Client Retention</p>
+      </div>
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════
-       TESTIMONIALS
-  ══════════════════════════════════════ -->
-  <section class="py-28 px-6 bg-[#F8FAFC]">
+  <!-- TESTIMONIALS -->
+  <section class="py-32 px-6 bg-white">
     <div class="max-w-7xl mx-auto">
       <div class="grid md:grid-cols-[180px_1fr] gap-12 mb-16">
-        <div class="reveal"><div class="sep mb-4"></div><p class="text-[#94A3B8] text-xs font-bold uppercase tracking-[.18em]">Testimonials</p></div>
-        <h2 class="text-4xl md:text-5xl font-bold leading-tight tracking-tight text-[#0F172A] reveal">
-          Trusted by massage<br/><span class="text-[#94A3B8] italic font-light">therapy businesses.</span>
+        <div class="reveal">
+          <div class="sep-gold mb-4"></div>
+          <p class="section-label" style="color:#A8A29E;">Testimonials</p>
+        </div>
+        <h2 class="font-serif leading-tight tracking-tight reveal" style="font-size:clamp(2.2rem,5vw,3.75rem);color:#1C1917;">
+          Trusted by massage<br/><em class="font-normal" style="color:#A8A29E;">therapy businesses.</em>
         </h2>
       </div>
       <div class="grid md:grid-cols-3 gap-5">
-        <div class="bg-white rounded-3xl p-7 border border-gray-100 hover:shadow-lg hover:border-[#6B9FBE]/20 transition-all duration-300 cursor-default reveal reveal-d1">
-          <div class="flex gap-0.5 mb-5" role="img" aria-label="5 stars">
-            <svg class="h-4 w-4 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
-            <svg class="h-4 w-4 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
-            <svg class="h-4 w-4 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
-            <svg class="h-4 w-4 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
-            <svg class="h-4 w-4 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
+        <div class="rounded-xl p-7 border hover:border-[#C4944A]/35 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-default reveal reveal-d1" style="background:#FAF9F7;border-color:#E8E5E0;">
+          <div class="quote-mark mb-1" aria-hidden="true">"</div>
+          <p class="text-sm leading-relaxed italic mb-6 font-sans" style="color:#57534E;">"Before ClinicFlow, I spent hours chasing insurance companies. Now I just see the monthly report and focus on my clients. Complete game-changer."</p>
+          <div class="flex items-center gap-3 pt-4" style="border-top:1px solid #E8E5E0;">
+            <div class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs font-sans" style="background:#1C1917;color:#FAF9F7;">SR</div>
+            <div>
+              <div class="font-semibold text-sm font-sans" style="color:#1C1917;">Sarah R.</div>
+              <div class="text-xs font-sans" style="color:#A8A29E;">Serenity Touch Massage</div>
+            </div>
+            <div class="ml-auto flex gap-0.5" role="img" aria-label="5 stars">
+              <svg class="h-3.5 w-3.5 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
+              <svg class="h-3.5 w-3.5 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
+              <svg class="h-3.5 w-3.5 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
+              <svg class="h-3.5 w-3.5 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
+              <svg class="h-3.5 w-3.5 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
+            </div>
           </div>
-          <p class="text-[#334155] text-sm leading-relaxed italic mb-5">"Before ClinicFlow, I spent hours chasing insurance companies. Now I just see the monthly report and focus on my clients. Complete game-changer."</p>
-          <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-[#EFF6FF] flex items-center justify-center text-[#6B9FBE] font-bold text-xs">SR</div><div><div class="font-semibold text-[#0F172A] text-sm">Sarah R.</div><div class="text-[#94A3B8] text-xs">Serenity Touch Massage</div></div></div>
         </div>
-        <div class="bg-white rounded-3xl p-7 border border-gray-100 hover:shadow-lg hover:border-[#6B9FBE]/20 transition-all duration-300 cursor-default reveal reveal-d2">
-          <div class="flex gap-0.5 mb-5" role="img" aria-label="5 stars">
-            <svg class="h-4 w-4 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
-            <svg class="h-4 w-4 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
-            <svg class="h-4 w-4 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
-            <svg class="h-4 w-4 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
-            <svg class="h-4 w-4 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
+        <div class="rounded-xl p-7 border hover:border-[#C4944A]/35 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-default reveal reveal-d2" style="background:#FAF9F7;border-color:#E8E5E0;">
+          <div class="quote-mark mb-1" aria-hidden="true">"</div>
+          <p class="text-sm leading-relaxed italic mb-6 font-sans" style="color:#57534E;">"ClinicFlow got us credentialed with 4 major insurers in under 3 months. Their team kept us updated the whole time — zero stress on our end."</p>
+          <div class="flex items-center gap-3 pt-4" style="border-top:1px solid #E8E5E0;">
+            <div class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs font-sans" style="background:#1C1917;color:#FAF9F7;">ML</div>
+            <div>
+              <div class="font-semibold text-sm font-sans" style="color:#1C1917;">Marcus L.</div>
+              <div class="text-xs font-sans" style="color:#A8A29E;">Restore Wellness Studio</div>
+            </div>
+            <div class="ml-auto flex gap-0.5" role="img" aria-label="5 stars">
+              <svg class="h-3.5 w-3.5 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
+              <svg class="h-3.5 w-3.5 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
+              <svg class="h-3.5 w-3.5 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
+              <svg class="h-3.5 w-3.5 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
+              <svg class="h-3.5 w-3.5 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
+            </div>
           </div>
-          <p class="text-[#334155] text-sm leading-relaxed italic mb-5">"ClinicFlow got us credentialed with 4 major insurers in under 3 months. Their team kept us updated the whole time — zero stress on our end."</p>
-          <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-[#EFF6FF] flex items-center justify-center text-[#6B9FBE] font-bold text-xs">ML</div><div><div class="font-semibold text-[#0F172A] text-sm">Marcus L.</div><div class="text-[#94A3B8] text-xs">Restore Wellness Studio</div></div></div>
         </div>
-        <div class="bg-white rounded-3xl p-7 border border-gray-100 hover:shadow-lg hover:border-[#6B9FBE]/20 transition-all duration-300 cursor-default reveal reveal-d3">
-          <div class="flex gap-0.5 mb-5" role="img" aria-label="5 stars">
-            <svg class="h-4 w-4 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
-            <svg class="h-4 w-4 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
-            <svg class="h-4 w-4 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
-            <svg class="h-4 w-4 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
-            <svg class="h-4 w-4 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
+        <div class="rounded-xl p-7 border hover:border-[#C4944A]/35 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-default reveal reveal-d3" style="background:#FAF9F7;border-color:#E8E5E0;">
+          <div class="quote-mark mb-1" aria-hidden="true">"</div>
+          <p class="text-sm leading-relaxed italic mb-6 font-sans" style="color:#57534E;">"Handing over billing felt risky at first. But ClinicFlow's transparency and monthly reports gave me confidence immediately. Approval rate improved dramatically."</p>
+          <div class="flex items-center gap-3 pt-4" style="border-top:1px solid #E8E5E0;">
+            <div class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs font-sans" style="background:#1C1917;color:#FAF9F7;">JM</div>
+            <div>
+              <div class="font-semibold text-sm font-sans" style="color:#1C1917;">Jessica M.</div>
+              <div class="text-xs font-sans" style="color:#A8A29E;">Harmony Massage &amp; Spa</div>
+            </div>
+            <div class="ml-auto flex gap-0.5" role="img" aria-label="5 stars">
+              <svg class="h-3.5 w-3.5 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
+              <svg class="h-3.5 w-3.5 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
+              <svg class="h-3.5 w-3.5 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
+              <svg class="h-3.5 w-3.5 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
+              <svg class="h-3.5 w-3.5 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
+            </div>
           </div>
-          <p class="text-[#334155] text-sm leading-relaxed italic mb-5">"Handing over billing felt risky at first. But ClinicFlow's transparency and monthly reports gave me confidence immediately. Approval rate improved dramatically."</p>
-          <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-[#EFF6FF] flex items-center justify-center text-[#6B9FBE] font-bold text-xs">JM</div><div><div class="font-semibold text-[#0F172A] text-sm">Jessica M.</div><div class="text-[#94A3B8] text-xs">Harmony Massage &amp; Spa</div></div></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════
-       CONTACT — Netlify Forms
-  ══════════════════════════════════════ -->
-  <section id="contact" class="py-28 px-6 bg-white">
+  <!-- CONTACT -->
+  <section id="contact" class="py-32 px-6" style="background:#FAF9F7;">
     <div class="max-w-3xl mx-auto">
       <div class="mb-14 reveal">
-        <div class="sep mb-4"></div>
-        <p class="text-[#6B9FBE] text-xs font-bold uppercase tracking-[.18em] mb-5">Get Started</p>
-        <h2 class="text-5xl md:text-6xl font-bold leading-tight tracking-tight text-[#0F172A] mb-5">
-          Let's talk.<br/><span class="text-[#94A3B8] italic font-light">We'll handle the rest.</span>
+        <div class="sep-gold mb-4"></div>
+        <p class="section-label mb-5" style="color:#B45309;">Get Started</p>
+        <h2 class="font-serif leading-tight tracking-tight mb-5" style="font-size:clamp(2.8rem,6vw,4.5rem);color:#1C1917;">
+          Let's talk.<br/><em class="font-normal" style="color:#A8A29E;">We'll handle the rest.</em>
         </h2>
-        <p class="text-[#64748B] text-lg">Tell us about your practice. We'll respond within one business day.</p>
+        <p class="text-base leading-relaxed font-sans font-light" style="color:#78716C;">Tell us about your practice. We'll respond within one business day.</p>
       </div>
-
       <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="reveal"
         x-data="{loading:false,sent:false}"
         @submit.prevent="
@@ -526,18 +548,17 @@
         ">
         <input type="hidden" name="form-name" value="contact"/>
         <p class="hidden" aria-hidden="true"><label>Skip: <input name="bot-field"/></label></p>
-
         <div x-show="!sent">
           <div class="grid md:grid-cols-2 gap-4 mb-4">
-            <div><label for="name" class="block text-[#334155] text-sm font-semibold mb-2">Full Name <span class="text-red-400" aria-hidden="true">*</span></label><input type="text" id="name" name="name" required autocomplete="name" placeholder="Jane Smith" class="form-field"/></div>
-            <div><label for="business" class="block text-[#334155] text-sm font-semibold mb-2">Business Name <span class="text-red-400" aria-hidden="true">*</span></label><input type="text" id="business" name="business" required placeholder="Serenity Massage Studio" class="form-field"/></div>
+            <div><label for="name" class="block text-sm font-semibold font-sans mb-2" style="color:#57534E;">Full Name <span class="text-red-500" aria-hidden="true">*</span></label><input type="text" id="name" name="name" required autocomplete="name" placeholder="Jane Smith" class="form-field"/></div>
+            <div><label for="business" class="block text-sm font-semibold font-sans mb-2" style="color:#57534E;">Business Name <span class="text-red-500" aria-hidden="true">*</span></label><input type="text" id="business" name="business" required placeholder="Serenity Massage Studio" class="form-field"/></div>
           </div>
           <div class="grid md:grid-cols-2 gap-4 mb-4">
-            <div><label for="email" class="block text-[#334155] text-sm font-semibold mb-2">Email <span class="text-red-400" aria-hidden="true">*</span></label><input type="email" id="email" name="email" required autocomplete="email" placeholder="jane@yourstudio.com" class="form-field"/></div>
-            <div><label for="phone" class="block text-[#334155] text-sm font-semibold mb-2">Phone</label><input type="tel" id="phone" name="phone" autocomplete="tel" placeholder="(555) 000-0000" class="form-field"/></div>
+            <div><label for="email" class="block text-sm font-semibold font-sans mb-2" style="color:#57534E;">Email <span class="text-red-500" aria-hidden="true">*</span></label><input type="email" id="email" name="email" required autocomplete="email" placeholder="jane@yourstudio.com" class="form-field"/></div>
+            <div><label for="phone" class="block text-sm font-semibold font-sans mb-2" style="color:#57534E;">Phone</label><input type="tel" id="phone" name="phone" autocomplete="tel" placeholder="(555) 000-0000" class="form-field"/></div>
           </div>
           <div class="mb-4">
-            <label for="service" class="block text-[#334155] text-sm font-semibold mb-2">Service Interest <span class="text-red-400" aria-hidden="true">*</span></label>
+            <label for="service" class="block text-sm font-semibold font-sans mb-2" style="color:#57534E;">Service Interest <span class="text-red-500" aria-hidden="true">*</span></label>
             <select id="service" name="service" required class="form-field cursor-pointer">
               <option value="" disabled selected>Select a service…</option>
               <option value="credentialing">Provider Credentialing</option>
@@ -545,119 +566,101 @@
               <option value="both">Both Services</option>
             </select>
           </div>
-          <div class="mb-8"><label for="message" class="block text-[#334155] text-sm font-semibold mb-2">About Your Practice</label><textarea id="message" name="message" rows="4" placeholder="How many therapists work in your practice? Are you currently credentialed with any insurers?" class="form-field resize-none"></textarea></div>
-          <button type="submit" :disabled="loading" class="btn-dark w-full flex items-center justify-center gap-3 disabled:opacity-60 disabled:cursor-not-allowed">
+          <div class="mb-8"><label for="message" class="block text-sm font-semibold font-sans mb-2" style="color:#57534E;">About Your Practice</label><textarea id="message" name="message" rows="4" placeholder="How many therapists work in your practice? Are you currently credentialed with any insurers?" class="form-field resize-none"></textarea></div>
+          <button type="submit" :disabled="loading" class="btn-dark w-full justify-center disabled:opacity-60 disabled:cursor-not-allowed">
             <span x-show="!loading">Send My Request</span>
-            <svg x-show="!loading" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            <span x-show="loading" class="flex items-center gap-2"><svg class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24" aria-hidden="true"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>Sending…</span>
+            <svg x-show="!loading" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <span x-show="loading" class="flex items-center gap-2 font-sans"><svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24" aria-hidden="true"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>Sending…</span>
           </button>
-          <p class="text-center text-[#94A3B8] text-sm mt-4">We respond within 1 business day. Your info stays private.</p>
+          <p class="text-center text-sm mt-4 font-sans" style="color:#A8A29E;">We respond within 1 business day. Your info stays private.</p>
         </div>
-
-        <div x-show="sent" x-transition class="text-center py-14 border border-green-100 rounded-2xl bg-green-50">
-          <div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-5"><svg class="h-7 w-7 text-green-600" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd"/></svg></div>
-          <h3 class="text-2xl font-bold text-[#0F172A] mb-3">Request Sent!</h3>
-          <p class="text-[#64748B]">We'll be in touch within one business day.</p>
+        <div x-show="sent" x-transition class="text-center py-14 border rounded-xl" style="background:#F0FDF4;border-color:#BBF7D0;">
+          <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4" style="background:#DCFCE7;">
+            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor" style="color:#15803D;" aria-hidden="true"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd"/></svg>
+          </div>
+          <h3 class="text-xl font-semibold font-sans mb-2" style="color:#1C1917;">Request Sent</h3>
+          <p class="text-sm font-sans" style="color:#57534E;">We'll be in touch within one business day.</p>
         </div>
       </form>
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════
-       FOOTER
-  ══════════════════════════════════════ -->
-  <footer class="py-12 px-6 border-t border-gray-100 bg-[#F8FAFC]">
+  <!-- FOOTER -->
+  <footer class="py-14 px-6" style="background:#1C1917;">
     <div class="max-w-7xl mx-auto">
       <div class="grid md:grid-cols-3 gap-10 mb-10">
         <div>
-          <div class="flex items-center gap-2.5 mb-4"><div class="w-7 h-7 bg-[#6B9FBE] rounded-lg flex items-center justify-center"><svg width="14" height="14" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8 16C8 11.582 11.582 8 16 8c2.8 0 5.3 1.4 6.8 3.6L20.2 13.2C19.2 11.9 17.7 11 16 11c-2.761 0-5 2.239-5 5s2.239 5 5 5c1.7 0 3.2-.9 4.2-2.2l2.6 1.6C21.3 22.6 18.8 24 16 24c-4.418 0-8-3.582-8-8z" fill="white"/><path d="M20 16h4M22 14v4" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div><span class="text-[#0F172A] font-bold">ClinicFlow</span></div>
-          <p class="text-[#94A3B8] text-sm leading-relaxed max-w-xs">Insurance claims, handled. So you can focus on healing.</p>
+          <div class="flex items-center gap-2.5 mb-4">
+            <div class="w-7 h-7 rounded-md flex items-center justify-center" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);">
+              <svg width="14" height="14" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8 16C8 11.582 11.582 8 16 8c2.8 0 5.3 1.4 6.8 3.6L20.2 13.2C19.2 11.9 17.7 11 16 11c-2.761 0-5 2.239-5 5s2.239 5 5 5c1.7 0 3.2-.9 4.2-2.2l2.6 1.6C21.3 22.6 18.8 24 16 24c-4.418 0-8-3.582-8-8z" fill="white"/><path d="M20 16h4M22 14v4" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <span class="font-semibold text-sm font-sans text-white">ClinicFlow</span>
+          </div>
+          <p class="text-sm leading-relaxed font-sans max-w-xs" style="color:rgba(255,255,255,.38);">Insurance claims, handled. So you can focus on healing.</p>
         </div>
         <div class="flex flex-col gap-3">
-          <p class="text-[#CBD5E1] text-xs font-bold uppercase tracking-[.18em] mb-1">Navigation</p>
-          <a href="#services" class="text-[#94A3B8] text-sm hover:text-[#6B9FBE] cursor-pointer transition-colors">Services</a>
-          <a href="#how-it-works" class="text-[#94A3B8] text-sm hover:text-[#6B9FBE] cursor-pointer transition-colors">How It Works</a>
-          <a href="#contact" class="text-[#94A3B8] text-sm hover:text-[#6B9FBE] cursor-pointer transition-colors">Contact</a>
+          <p class="section-label mb-1" style="color:rgba(255,255,255,.22);">Navigation</p>
+          <a href="#services" class="text-sm font-sans transition-colors cursor-pointer hover:text-[#C4944A]" style="color:rgba(255,255,255,.42);">Services</a>
+          <a href="#how-it-works" class="text-sm font-sans transition-colors cursor-pointer hover:text-[#C4944A]" style="color:rgba(255,255,255,.42);">How It Works</a>
+          <a href="#contact" class="text-sm font-sans transition-colors cursor-pointer hover:text-[#C4944A]" style="color:rgba(255,255,255,.42);">Contact</a>
         </div>
         <div>
-          <p class="text-[#CBD5E1] text-xs font-bold uppercase tracking-[.18em] mb-3">A SmartTeam Company</p>
-          <p class="text-[#94A3B8] text-sm leading-relaxed mb-4">ClinicFlow is part of the SmartTeam family — built to help small businesses operate at enterprise scale.</p>
-          <a href="mailto:info@clinicflow.com" class="text-[#6B9FBE] text-sm hover:text-[#4A8DAF] cursor-pointer transition-colors">info@clinicflow.com</a>
+          <p class="section-label mb-3" style="color:rgba(255,255,255,.22);">A SmartTeam Company</p>
+          <p class="text-sm leading-relaxed mb-4 font-sans" style="color:rgba(255,255,255,.38);">ClinicFlow is part of the SmartTeam family — built to help small businesses operate at enterprise scale.</p>
+          <a href="mailto:info@clinicflow.com" class="text-sm font-sans transition-colors cursor-pointer hover:opacity-80" style="color:#C4944A;">info@clinicflow.com</a>
         </div>
       </div>
-      <div class="border-t border-gray-100 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
-        <p class="text-[#CBD5E1] text-sm">© 2025 ClinicFlow. All rights reserved.</p>
-        <div class="flex gap-6"><a href="#" class="text-[#CBD5E1] text-sm hover:text-[#94A3B8] cursor-pointer transition-colors">Privacy Policy</a><a href="#" class="text-[#CBD5E1] text-sm hover:text-[#94A3B8] cursor-pointer transition-colors">Terms of Service</a></div>
+      <div class="pt-6 flex flex-col md:flex-row items-center justify-between gap-4" style="border-top:1px solid rgba(255,255,255,.08);">
+        <p class="text-sm font-sans" style="color:rgba(255,255,255,.22);">© 2025 ClinicFlow. All rights reserved.</p>
+        <div class="flex gap-6">
+          <a href="#" class="text-sm font-sans transition-colors cursor-pointer hover:text-[#C4944A]" style="color:rgba(255,255,255,.22);">Privacy Policy</a>
+          <a href="#" class="text-sm font-sans transition-colors cursor-pointer hover:text-[#C4944A]" style="color:rgba(255,255,255,.22);">Terms of Service</a>
+        </div>
       </div>
     </div>
   </footer>
 
   <script>
-    // ── Particle stars in hero ───────────────────────────────────────
-    (function() {
-      const container = document.getElementById('particles');
-      const hero = container.closest('section');
-      for (let i = 0; i < 55; i++) {
-        const p = document.createElement('div');
-        const size = Math.random() * 3 + 1;
-        p.className = 'particle';
-        p.style.cssText = `
-          width:${size}px; height:${size}px;
-          left:${Math.random()*100}%;
-          top:${Math.random()*100}%;
-          --dur:${2+Math.random()*4}s;
-          --delay:${Math.random()*4}s;
-        `;
-        hero.appendChild(p);
-      }
-    })();
-
-    // ── GSAP Hero animation ─────────────────────────────────────────
+    // GSAP hero
+    gsap.set(['#hero-sub','#hero-ctas'], { y: 16 });
     gsap.set('#hero-img', { y: 30 });
-    const tl = gsap.timeline({ defaults:{ ease:'power4.out' } });
-    tl.to('#hero-badge', { opacity:1, duration:.6 }, .2);
-    tl.to('#c0',       { y:'0%', duration:1 }, .35);
-    tl.to('#c1',       { y:'0%', duration:1 }, .5);
-    tl.to('#c2',       { y:'0%', duration:1 }, .65);
-    tl.to('#hero-sub', { opacity:1, y:0, duration:.8 }, .9);
-    tl.to('#hero-ctas',{ opacity:1, y:0, duration:.7 }, 1.0);
-    tl.to('#hero-img', { opacity:1, y:0, duration:1.1 }, 0.45);
+    const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+    tl.to('#hero-badge', { opacity: 1, duration: .6 }, .2);
+    tl.to('#c0', { y: '0%', duration: 1.1 }, .35);
+    tl.to('#c1', { y: '0%', duration: 1.1 }, .5);
+    tl.to('#c2', { y: '0%', duration: 1.1 }, .65);
+    tl.to('#hero-sub',  { opacity: 1, y: 0, duration: .85 }, .95);
+    tl.to('#hero-ctas', { opacity: 1, y: 0, duration: .75 }, 1.05);
+    tl.to('#hero-img',  { opacity: 1, y: 0, duration: 1.1 }, 0.45);
+    setTimeout(() => document.getElementById('c1')?.classList.add('show'), 1200);
 
-    // underline accent
-    setTimeout(() => document.getElementById('c1')?.classList.add('show'), 1100);
-
-    // ── Scroll reveal ───────────────────────────────────────────────
+    // Scroll reveal
     const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }});
-    }, { threshold:.08, rootMargin:'0px 0px -30px 0px' });
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }});
+    }, { threshold: .08, rootMargin: '0px 0px -30px 0px' });
     document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-    // ── Custom cursor (dot + lagging ring) ──────────────────────────
+    // Custom cursor
     (function() {
       const dot = document.getElementById('cursor-dot');
       const ring = document.getElementById('cursor-ring');
       if (!dot || !ring) return;
       let mx = -100, my = -100, rx = -100, ry = -100, first = true;
-
       document.addEventListener('mousemove', e => {
         mx = e.clientX; my = e.clientY;
         if (first) { rx = mx; ry = my; first = false; }
         dot.style.opacity = '1'; ring.style.opacity = '1';
       });
-      document.addEventListener('mouseleave', () => {
-        dot.style.opacity = '0'; ring.style.opacity = '0';
-      });
-
+      document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; });
       (function tick() {
-        rx += (mx - rx) * 0.1;
-        ry += (my - ry) * 0.1;
-        dot.style.transform  = `translate(${mx - 3}px,${my - 3}px)`;
-        ring.style.transform = `translate(${rx - 19}px,${ry - 19}px)`;
+        rx += (mx - rx) * 0.1; ry += (my - ry) * 0.1;
+        dot.style.transform  = `translate(${mx - 2.5}px,${my - 2.5}px)`;
+        ring.style.transform = `translate(${rx - 18}px,${ry - 18}px)`;
         requestAnimationFrame(tick);
       })();
     })();
 
-    // ── Scroll progress bar ─────────────────────────────────────────
+    // Scroll progress
     (function() {
       const bar = document.getElementById('scroll-progress');
       function update() {
