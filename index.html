@@ -88,7 +88,7 @@
     .form-field:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(180,83,9,.1); }
     .form-field::placeholder { color: var(--text-muted); }
 
-    #cursor-dot { position:fixed; left:0; top:0; width:5px; height:5px; background:var(--charcoal); border-radius:50%; z-index:9999; pointer-events:none; opacity:0; will-change:transform; transition:opacity .25s; }
+    #cursor-dot { position:fixed; left:0; top:0; width:5px; height:5px; background:#fff; border-radius:50%; z-index:9999; pointer-events:none; opacity:0; will-change:transform; transition:opacity .25s; mix-blend-mode:difference; }
     #cursor-ring { position:fixed; left:0; top:0; width:36px; height:36px; border-radius:50%; border:1.5px solid rgba(196,148,74,.65); z-index:9998; pointer-events:none; opacity:0; will-change:transform; transition:opacity .25s; }
     @media(pointer:coarse){ #cursor-dot,#cursor-ring{ display:none; } }
     @media(pointer:fine){ body,body *{ cursor:none !important; } input,textarea,select{ cursor:text !important; } }
