@@ -168,11 +168,12 @@
     <div class="absolute bottom-0 left-0 right-0 h-52 pointer-events-none" style="background:linear-gradient(to bottom,transparent,#FAF9F7);" aria-hidden="true"></div>
 
     <div class="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center">
-      <div id="hero-badge" class="inline-flex items-center gap-2.5 rounded-full px-4 py-2 mb-10"
-           style="opacity:0;background:rgba(196,148,74,.07);border:1px solid rgba(196,148,74,.3);">
+      <a id="hero-badge" href="https://www.smartkteam.com" target="_blank" rel="noopener noreferrer"
+         class="inline-flex items-center gap-2.5 rounded-full px-4 py-2 mb-10 transition-opacity duration-200 hover:opacity-75"
+         style="opacity:0;background:rgba(196,148,74,.07);border:1px solid rgba(196,148,74,.3);">
         <div class="w-1 h-1 rounded-full" style="background:#C4944A;animation:pulse-dot 2s ease-in-out infinite;"></div>
-        <span class="text-xs font-medium tracking-[.15em] uppercase font-sans" style="color:#C4944A;">A SmartTeam Company</span>
-      </div>
+        <span class="text-xs font-medium tracking-[.15em] uppercase font-sans" style="color:#C4944A;">A Smart KTeam Company</span>
+      </a>
 
       <h1 class="font-serif leading-[.9] tracking-[-0.01em] mb-9" style="font-size:clamp(56px,9.5vw,124px);">
         <div class="overflow-hidden mb-1.5"><span class="char-wrap"><span class="char text-white font-normal" id="c0">Insurance</span></span></div>
@@ -309,9 +310,13 @@
           <p class="section-label" style="color:#A8A29E;">The Problem</p>
         </div>
         <div>
-          <h2 class="font-serif leading-tight tracking-tight mb-14 reveal" style="font-size:clamp(2.2rem,5vw,3.75rem);color:#1C1917;">
+          <h2 class="font-serif leading-tight tracking-tight mb-10 reveal" style="font-size:clamp(2.2rem,5vw,3.75rem);color:#1C1917;">
             Insurance claims are <em class="font-normal" style="color:#A8A29E;">costing you</em><br/>time, revenue, and sleep.
           </h2>
+          <div class="rounded-2xl overflow-hidden mb-12 reveal reveal-d1" style="height:300px;">
+            <img src="https://raw.githubusercontent.com/smartkteam-dev/-images-smartkteam/main/Busy%20desk.png"
+                 alt="Busy professional desk" class="w-full h-full object-cover" style="object-position:center 50%;" loading="lazy"/>
+          </div>
           <div class="grid md:grid-cols-3 gap-5">
             <div class="bg-white rounded-xl p-7 border hover:border-[#C4944A]/50 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 cursor-default reveal reveal-d1" style="border-color:#E8E5E0;">
               <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-6" style="background:#FAF9F7;border:1px solid #E8E5E0;">
@@ -430,27 +435,36 @@
   </section>
 
   <!-- STATS -->
-  <section id="about" class="py-24 px-6" style="background:#1C1917;">
-    <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-8">
-      <div class="reveal text-center">
-        <div class="font-serif font-bold mb-3 text-white" style="font-size:clamp(2.5rem,6vw,4rem);">500+</div>
-        <div class="w-6 h-px mx-auto mb-3" style="background:rgba(196,148,74,.45);"></div>
-        <p class="text-sm font-sans font-medium" style="color:rgba(255,255,255,.4);">Claims Managed</p>
+  <section id="about" style="background:#1C1917;overflow:hidden;">
+    <div class="flex flex-col md:flex-row">
+      <div class="flex-1 py-24 px-6 md:px-16 lg:px-24 flex items-center">
+        <div class="w-full max-w-xl mx-auto md:mx-0 grid grid-cols-2 gap-12">
+          <div class="reveal text-center">
+            <div class="font-serif font-bold mb-3 text-white" style="font-size:clamp(2.5rem,5vw,4rem);">500+</div>
+            <div class="w-6 h-px mx-auto mb-3" style="background:rgba(196,148,74,.45);"></div>
+            <p class="text-sm font-sans font-medium" style="color:rgba(255,255,255,.4);">Claims Managed</p>
+          </div>
+          <div class="reveal reveal-d1 text-center">
+            <div class="font-serif font-bold mb-3 text-white" style="font-size:clamp(2.5rem,5vw,4rem);">98%</div>
+            <div class="w-6 h-px mx-auto mb-3" style="background:rgba(196,148,74,.45);"></div>
+            <p class="text-sm font-sans font-medium" style="color:rgba(255,255,255,.4);">Credentialing Success</p>
+          </div>
+          <div class="reveal reveal-d2 text-center">
+            <div class="font-serif font-bold mb-3 text-white" style="font-size:clamp(2.5rem,5vw,4rem);">2–3<span class="font-sans font-light" style="font-size:1.3rem;color:rgba(255,255,255,.35);">mo</span></div>
+            <div class="w-6 h-px mx-auto mb-3" style="background:rgba(196,148,74,.45);"></div>
+            <p class="text-sm font-sans font-medium" style="color:rgba(255,255,255,.4);">Avg. Credentialing Time</p>
+          </div>
+          <div class="reveal reveal-d3 text-center">
+            <div class="font-serif font-bold mb-3 text-white" style="font-size:clamp(2.5rem,5vw,4rem);">100%</div>
+            <div class="w-6 h-px mx-auto mb-3" style="background:rgba(196,148,74,.45);"></div>
+            <p class="text-sm font-sans font-medium" style="color:rgba(255,255,255,.4);">Client Retention</p>
+          </div>
+        </div>
       </div>
-      <div class="reveal reveal-d1 text-center">
-        <div class="font-serif font-bold mb-3 text-white" style="font-size:clamp(2.5rem,6vw,4rem);">98%</div>
-        <div class="w-6 h-px mx-auto mb-3" style="background:rgba(196,148,74,.45);"></div>
-        <p class="text-sm font-sans font-medium" style="color:rgba(255,255,255,.4);">Credentialing Success</p>
-      </div>
-      <div class="reveal reveal-d2 text-center">
-        <div class="font-serif font-bold mb-3 text-white" style="font-size:clamp(2.5rem,6vw,4rem);">2–3<span class="font-sans font-light" style="font-size:1.3rem;color:rgba(255,255,255,.35);">mo</span></div>
-        <div class="w-6 h-px mx-auto mb-3" style="background:rgba(196,148,74,.45);"></div>
-        <p class="text-sm font-sans font-medium" style="color:rgba(255,255,255,.4);">Avg. Credentialing Time</p>
-      </div>
-      <div class="reveal reveal-d3 text-center">
-        <div class="font-serif font-bold mb-3 text-white" style="font-size:clamp(2.5rem,6vw,4rem);">100%</div>
-        <div class="w-6 h-px mx-auto mb-3" style="background:rgba(196,148,74,.45);"></div>
-        <p class="text-sm font-sans font-medium" style="color:rgba(255,255,255,.4);">Client Retention</p>
+      <div class="relative hidden md:block" style="width:45%;min-height:420px;">
+        <img src="https://raw.githubusercontent.com/smartkteam-dev/-images-smartkteam/main/Clean%20desk.png"
+             alt="Clean professional desk" class="absolute inset-0 w-full h-full object-cover" loading="lazy"/>
+        <div class="absolute inset-0" style="background:linear-gradient(to right,#1C1917 0%,rgba(28,25,23,0) 35%);"></div>
       </div>
     </div>
   </section>
@@ -611,7 +625,7 @@
         </div>
       </div>
       <div class="pt-6 flex flex-col md:flex-row items-center justify-between gap-4" style="border-top:1px solid rgba(255,255,255,.08);">
-        <p class="text-sm font-sans" style="color:rgba(255,255,255,.22);">© 2025 ClinicFlow. All rights reserved.</p>
+        <p class="text-sm font-sans" style="color:rgba(255,255,255,.22);">© 2026 ClinicFlow. All rights reserved.</p>
         <div class="flex gap-6">
           <a href="#" class="text-sm font-sans transition-colors cursor-pointer hover:text-[#C4944A]" style="color:rgba(255,255,255,.22);">Privacy Policy</a>
           <a href="#" class="text-sm font-sans transition-colors cursor-pointer hover:text-[#C4944A]" style="color:rgba(255,255,255,.22);">Terms of Service</a>
